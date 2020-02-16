@@ -450,7 +450,8 @@ double getHeight(const TPolygon3D& p, const TPoint3D& c)
 	double r = mrpt::math::distance(p[0], c);
 	double l = mrpt::math::distance(p[0], p[1]);
 	for (size_t i = 1; i < N; i++)
-		if (std::abs(mrpt::math::distance(p[i], c) - r) >= mrpt::math::getEpsilon())
+		if (std::abs(mrpt::math::distance(p[i], c) - r) >=
+			mrpt::math::getEpsilon())
 			throw std::logic_error("There is a non-regular polygon.");
 		else if (
 			std::abs(mrpt::math::distance(p[i], p[(i + 1) % N]) - l) >=
@@ -1061,9 +1062,9 @@ void CPolyhedron::render(const RenderContext& rc) const
 		for (const auto& mEdge : mEdges)
 		{
 			TPoint3D p = mVertices[mEdge.v1];
-			glVertex3f(p.x, p.y, p.z);
+			glVertex3d(p.x, p.y, p.z);
 			p = mVertices[mEdge.v2];
-			glVertex3f(p.x, p.y, p.z);
+			glVertex3d(p.x, p.y, p.z);
 		}
 		glEnd();
 		glEnable(GL_LIGHTING);  // Disable lights when drawing lines
@@ -1078,12 +1079,12 @@ void CPolyhedron::render(const RenderContext& rc) const
 		for (const auto& mFace : mFaces)
 		{
 			glBegin(GL_POLYGON);
-			glNormal3f(mFace.normal[0], mFace.normal[1], mFace.normal[2]);
+			glNormal3d(mFace.normal[0], mFace.normal[1], mFace.normal[2]);
 			for (auto it2 = mFace.vertices.begin(); it2 != mFace.vertices.end();
 				 ++it2)
 			{
 				const TPoint3D& p = mVertices[*it2];
-				glVertex3f(p.x, p.y, p.z);
+				glVertex3d(p.x, p.y, p.z);
 			}
 			glEnd();
 		}
