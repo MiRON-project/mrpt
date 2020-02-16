@@ -222,8 +222,8 @@ bool math::SegmentsIntersection(
 {
 	double x, y;
 	bool b = SegmentsIntersection(x1, y1, x2, y2, x3, y3, x4, y4, x, y);
-	ix = static_cast<float>(x);
-	iy = static_cast<float>(y);
+	ix = d2f(x);
+	iy = d2f(y);
 	return b;
 }
 
@@ -701,7 +701,8 @@ bool math::intersect(const TPlane& p1, const TPlane& p2, TObject3D& obj)
 	{
 		// Planes are parallel
 		for (size_t i = 0; i < 3; i++)
-			if (std::abs(p1.coefs[i] * p2.coefs[3] - p1.coefs[3] * p2.coefs[i]) >=
+			if (std::abs(
+					p1.coefs[i] * p2.coefs[3] - p1.coefs[3] * p2.coefs[i]) >=
 				geometryEpsilon)
 				return false;
 		// Planes are the same
