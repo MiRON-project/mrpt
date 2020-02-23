@@ -47,10 +47,10 @@ inline void range2XYZ(
 	 *   y(i) = Ky * x(i)
 	 *   z(i) = Kz * x(i)
 	 */
-	const float r_cx = src_obs.cameraParams.cx();
-	const float r_cy = src_obs.cameraParams.cy();
-	const float r_fx_inv = 1.0f / src_obs.cameraParams.fx();
-	const float r_fy_inv = 1.0f / src_obs.cameraParams.fy();
+	const double r_cx = src_obs.cameraParams.cx();
+	const double r_cy = src_obs.cameraParams.cy();
+	const double r_fx_inv = 1.0f / src_obs.cameraParams.fx();
+	const double r_fy_inv = 1.0f / src_obs.cameraParams.fy();
 	TRangeImageFilter rif(fp);
 	size_t idx = 0;
 	for (int r = 0; r < H; r++)
@@ -59,8 +59,8 @@ inline void range2XYZ(
 			const float D = src_obs.rangeImage.coeff(r, c) * src_obs.rangeUnits;
 			if (rif.do_range_filter(r, c, D))
 			{
-				const float Ky = (r_cx - c) * r_fx_inv;
-				const float Kz = (r_cy - r) * r_fy_inv;
+				const float Ky = mrpt::d2f((r_cx - c) * r_fx_inv);
+				const float Kz = mrpt::d2f((r_cy - r) * r_fy_inv);
 				pca.setPointXYZ(
 					idx,
 					isDepth ? D : D / std::sqrt(1 + Ky * Ky + Kz * Kz),  // x
@@ -96,18 +96,18 @@ inline void range2XYZ_LUT(
 		src_obs.get_3dproj_lut().Kys.resize(WH);
 		src_obs.get_3dproj_lut().Kzs.resize(WH);
 
-		const float r_cx = src_obs.cameraParams.cx();
-		const float r_cy = src_obs.cameraParams.cy();
-		const float r_fx_inv = 1.0f / src_obs.cameraParams.fx();
-		const float r_fy_inv = 1.0f / src_obs.cameraParams.fy();
+		const auto r_cx = src_obs.cameraParams.cx();
+		const auto r_cy = src_obs.cameraParams.cy();
+		const auto r_fx_inv = 1.0 / src_obs.cameraParams.fx();
+		const auto r_fy_inv = 1.0 / src_obs.cameraParams.fy();
 
 		float* kys = &src_obs.get_3dproj_lut().Kys[0];
 		float* kzs = &src_obs.get_3dproj_lut().Kzs[0];
 		for (int r = 0; r < H; r++)
 			for (int c = 0; c < W; c++)
 			{
-				*kys++ = (r_cx - c) * r_fx_inv;
-				*kzs++ = (r_cy - r) * r_fy_inv;
+				*kys++ = mrpt::d2f((r_cx - c) * r_fx_inv);
+				*kzs++ = mrpt::d2f((r_cy - r) * r_fy_inv);
 			}
 	}  // end update LUT.
 
